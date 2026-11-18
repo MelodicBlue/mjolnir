@@ -1,0 +1,64 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# PERSONAL DATA — never commit. Everything here is about one specific job seeker.
+# The tracked *.example.* files are the templates users copy from.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Your identity and answers
+config/profile.json
+config/answers.md
+# config/settings.json  (tracked in David's PRIVATE repo: the daily cloud sweep needs it)
+
+# Your resume, transcript, and any other document you upload
+data/*.pdf
+data/*.doc
+data/*.docx
+data/*.png
+data/*.jpg
+data/resume.tex
+
+# Your working target list and private research
+data/queue.md
+data/interview-dossier.md
+data/manual-portals.md
+
+# Personal launch/marketing notes
+content/
+
+# Everything the agent produces about you
+applications/
+logs/
+screenshots/
+# state/ is tracked in the private repo so the cloud sweep can keep its cutoffs and publish the queue.
+state/status.md
+
+# Legacy local shim for the pre-rename LaunchAgent
+scripts/hourly_run.sh
+
+# Personal Obsidian mirror: contains your own fact sheet, not shippable
+scripts/export_to_obsidian.py
+
+# Run artifacts
+.hourly-run.lock/
+.tmp-obsidian/
+*.log
+
+# Editor / OS noise
+.DS_Store
+.idea/
+.vscode/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local Claude Code settings (may contain machine-specific paths)
+.claude/settings.local.json
+
+# Explicitly keep the templates and the shared research
+!config/profile.example.json
+!config/answers.example.md
+!config/settings.example.json
+!data/queue.example.md
+!data/resume.example.tex
+!data/sources.md
+data/interview-tracker.md

@@ -1,0 +1,46 @@
+name: daily-sweep
+# Finds new design roles every morning and writes the ranked queue to state/queue_ranked.md (and .csv).
+# Runs in GitHub's cloud, so it does not need David's laptop to be on.
+on:
+  schedule:
+    - cron: '17 5 * * *'   # 06:17 Lagos time, daily
+  workflow_dispatch: {}      # "Run workflow" button for a manual run
+permissions:
+  contents: write
+concurrency: daily-sweep
+jobs:
+  sweep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Self-tests
+        run: |
+          python3 scripts/design_targets.py --selftest
+          python3 scripts/rank.py --selftest
+      - name: ATS boards (Greenhouse, Lever, Ashby, SmartRecruiters)
+        continue-on-error: true
+        run: |
+          if [ -f state/last_sweep.txt ]; then python3 scripts/delta_sweep.py; else python3 scripts/delta_sweep.py --since "$(date -u -d '7 days ago' +%Y-%m-%dT%H:%MZ)"; fi
+      - name: Startup lists and VC portfolio boards
+        continue-on-error: true
+        run: |
+          if [ -f state/last_list_sweep.txt ]; then python3 scripts/list_sweep.py; else python3 scripts/list_sweep.py --since "$(date -u -d '7 days ago' +%Y-%m-%dT%H:%MZ)"; fi
+      - name: Remote job boards
+        continue-on-error: true
+        run: |
+          if [ -f state/last_remote_sweep.txt ]; then python3 scripts/remote_sweep.py; else python3 scripts/remote_sweep.py --hours 168; fi
+      - name: LinkedIn (logged-out search)
+        continue-on-error: true
+        run: python3 scripts/linkedin_sweep.py
+      - name: Rank
+        run: python3 scripts/rank.py
+      - name: Save results
+        run: |
+          git config user.name "daily-sweep"
+          git config user.email "actions@users.noreply.github.com"
+          git add -f state/
+          git commit -m "Daily sweep $(date -u +%F)" || echo "nothing new"
+          git push
