@@ -49,6 +49,13 @@ if run.get('dry_run'):
     out.append("DRY RUN IS ON: fill every field, verify it, screenshot it, write the log entry and "
                "the per-application doc marked DRY RUN, then close the tab WITHOUT clicking submit. "
                "Do not submit anything this run under any circumstance.")
+if run.get('auto_submit') and not run.get('dry_run'):
+    out.append("AUTO-SUBMIT IS ON: David has approved submitting without a per-application checkpoint. "
+               "Submit every application that passes all checks. Anything uncertain (a missing fact, a no-AI "
+               "rule, a graded task, a login, an interactive CAPTCHA) is NEEDS HUMAN, never a guess.")
+elif not run.get('dry_run'):
+    out.append("AUTO-SUBMIT IS OFF: fill and verify each application, write its doc marked READY FOR DAVID, "
+               "then leave it unsubmitted.")
 if run.get('one_application_per_company_per_run', True):
     out.append("One application per company per run.")
 if run.get('same_day_company_freeze', True):
@@ -167,13 +174,13 @@ trap 'rm -rf "$LOCK_DIR" 2>/dev/null || true' EXIT
 
 PROMPT="Continue the job application run in $(pwd). This is a fresh session: derive all durable state from repository files, not from chat history.
 
-Read and follow, in order: CLAUDE.md, config/settings.json, config/profile.json, config/answers.md, config/spec.md, config/documents.md, data/queue.md, state/status.md, and logs/applications-log.md.
+Read and follow, in order: CLAUDE.md, MJOLNIR.md (David's rules; they win over CLAUDE.md where they differ), config/settings.json, config/profile.json, config/answers.md, config/spec.md, config/documents.md, data/queue.md, state/status.md, and logs/applications-log.md.
 
 RUN CONFIG (from config/settings.json, obey exactly): ${SETTINGS_PROMPT}
 
 METHOD: use the connected real Chrome through the Claude-in-Chrome extension and fill every field with trusted computer-tool input. Use file_upload for the resume and transcript. At the start, call tabs_context_mcp and close ONLY leftover job-application tabs inside your own MCP tab group from prior crashed runs; NEVER close, read, or navigate any tab that is not listed in your group, those are the user's personal tabs. Do the whole run in one reused tab, navigating it from posting to posting so no half-filled form is left behind. If the tab group drops mid-fill, reconnect via tabs_context_mcp, abandon the half-filled form rather than resuming it, and restart that company from a clean tab. Before exiting, close EVERY tab in your group with tabs_close_mcp and confirm tabs_context_mcp answers that no tab group exists.
 
-SOURCING: run python3 scripts/delta_sweep.py in the FOREGROUND with the Bash tool (timeout 540000), ONCE per run. Never run it in the background and never wait for a notification: a headless session ends when your turn ends. Never rebuild the sweep in /tmp; the script keeps its own cutoff in state/last_sweep.txt. A candidate row ending in FLYOUT promises an in-person final round; mention that as a plus. Also run python3 scripts/portal_sweep.py once (foreground): apply only to rows under AGENT MAY APPLY (a signed-in portal or a no-account portal; on a signed-in one confirm the signed-in header first), and copy every row under FOR YOU, BY HAND into the top of the run summary. Then run python3 scripts/list_sweep.py once (foreground): new postings from the SimplifyJobs lists and six VC portfolio boards, already filtered on location, start window, years and comp; judge each against targets.prestige_note, run the usual duplicate and eligibility checks, and apply on the company's own ATS. Never open a login page. Then run python3 scripts/linkedin_sweep.py once (foreground): new LinkedIn postings in targets.locations, filtered only on software titles and active clearance. The years column is information, not a filter: check the years-of-experience gate yourself. LinkedIn is a source only: never sign in to LinkedIn and never use Easy Apply. For a company-site row, find the same req on the company's own ATS or careers portal and apply there; skip easy-apply rows and staffing agencies.
+SOURCING: run each of these ONCE, in the FOREGROUND with the Bash tool (timeout 540000), never in the background and never waiting for a notification (a headless session ends when your turn ends): python3 scripts/delta_sweep.py, python3 scripts/list_sweep.py, python3 scripts/remote_sweep.py, python3 scripts/linkedin_sweep.py. A sweep that fails is logged and skipped, not retried in a loop. Then run python3 scripts/rank.py and work state/queue_ranked.md top-down (fit >= targets.min_fit_percent only). LinkedIn is a source only: never sign in and never use Easy Apply; for a company-site row, find the same req on the company's own ATS or careers page and apply there. Skip staffing agencies. Never open a login page.
 
 SCOPE: verify every posting is live and check applications/, data/queue.md, and logs/applications-log.md for duplicates before opening a tab. A hard eligibility mismatch is a SKIP with a one-line log entry, not a NEEDS HUMAN. NEEDS HUMAN is only for a role the user is eligible for that is missing a fact they could supply. Never submit a weak target just to reach the cap; zero strong submissions beats one bad one.
 

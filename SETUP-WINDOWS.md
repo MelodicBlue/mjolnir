@@ -6,8 +6,8 @@ How this copy differs from the original please-hire-me:
 - **Locations:** remote worldwide, EMEA or Africa; Nigeria; and on-site UK/EU/UAE roles that don't rule out sponsorship. "Remote (US only)" is dropped.
 - **Sources:** the original ATS boards, startup lists and VC portfolio boards, plus `scripts/remote_sweep.py` (Himalayas, Remote OK, We Work Remotely, Remotive) and LinkedIn searches for Worldwide, EU, UK and Nigeria.
 - **Ranking:** `scripts/rank.py` scores every posting (60% fit, 30% timing, 10% company) and keeps fit >= 65%. Output: `state/queue_ranked.md` and `.csv`.
-- **Finding jobs runs in the cloud** every morning at 06:17 Lagos time (`.github/workflows/daily-sweep.yml`). Your laptop can be off.
-- **Applying is supervised.** You run it in Claude Code and approve every submission.
+- **Everything runs by itself, daily, on your laptop:** find postings, rank them, tailor, fill, submit (up to 5), log. Windows Task Scheduler starts it; you do nothing.
+- **Applications go out any time.** Day/time windows are only for follow-up emails.
 
 ## One-time install (about 30 minutes)
 
@@ -25,7 +25,18 @@ Run these in **PowerShell** (not WSL: the browser connection does not work insid
 6. Get the code: `git clone https://github.com/<you>/mjolnir.git` then `cd mjolnir`.
 7. Put your two private files in `config/`: `profile.json` and `answers.md` (sent separately; they are not in GitHub).
 
-## Every application session
+## Turn on the daily run (once)
+
+In PowerShell, inside the `mjolnir` folder:
+
+`powershell -ExecutionPolicy Bypass -File scripts\schedule-windows.ps1 install -Time 10:00`
+
+- Runs every day at 10:00. If the laptop was off, it runs as soon as it's back on.
+- Keep Edge open (it can sit minimised) and the Claude extension signed in.
+- `... schedule-windows.ps1 run-now` starts one immediately; `status` shows the last run; `uninstall` turns it off.
+- What happened each day: `logs/applications-log.md` (summary at the top) and `logs/scheduled-runs.log`.
+
+## Running one by hand (optional)
 
 1. Open PowerShell, `cd mjolnir`, run `claude`.
 2. Type `/chrome` and check it says connected. If it can't find Edge, tell Claude: "Edge is my browser, register the native messaging host for Edge."

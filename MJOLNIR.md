@@ -22,10 +22,17 @@ from config/answers.md. Finish every part of every form.
    only when the role clearly needs something those two can't show.
 6. **Answer every question spectacularly.** Each free-text answer and the cover letter answers the question actually asked,
    ties to step 2 and 3, and uses Stories, not a resume recap. Match David's voice sample. No em dashes.
-7. **Show David everything before submit.** Tailored resume, every answer, the letter. He approves or edits.
+7. **Submit, or hold for David.** `run.auto_submit` true: submit once every check passes. False: leave it filled and
+   marked READY FOR DAVID. Either way, anything uncertain is NEEDS HUMAN, never a guess.
 8. **Log it** (company, role, date, resume variant, case studies used) and set the follow-up.
 
-## Follow-up nudge
+## When things happen
+- **Applications go out any day, any time.** No day or time window for applying: the sooner after posting, the better.
+- **Day and time windows are for emails only** (follow-ups below, and everything in Mjolnir for Emails).
+- **Daily run:** sweep, rank, then up to `run.max_applications_per_run` (5) tailored applications. Fewer is fine.
+  David never has to ask for sourcing or applying; the schedule does it.
+
+## Follow-up nudge (email, so the time window applies)
 - Due **3 business days** after submitting.
 - Send at the best slot **in the recipient's time zone** (use the job's office location; for remote roles, the company HQ):
   Tuesday to Thursday, 9:00 to 11:00 local time. Never Friday afternoon, weekends, or local public holidays.
@@ -35,4 +42,4 @@ from config/answers.md. Finish every part of every form.
 
 ## Never
 Invent a fact, number, skill or title. Upgrade intern work to "lead". Apply twice to the same company in a week.
-Submit without David's approval. Create accounts, type passwords, or solve CAPTCHAs.
+Submit when `run.auto_submit` is false. Create accounts, type passwords, or solve CAPTCHAs.
