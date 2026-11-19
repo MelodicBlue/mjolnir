@@ -62,3 +62,6 @@ venv/
 !data/resume.example.tex
 !data/sources.md
 data/interview-tracker.md
+
+# Mjolnir master CV spec (personal)
+data/cv-base.json

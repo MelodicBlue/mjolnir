@@ -17,7 +17,8 @@ from config/answers.md. Finish every part of every form.
    fixed lanes and do not force a domain angle. Never lead with motion work (not yet strong enough to lead).
 4. **Tailor the resume.** Order and wording follow the posting's priorities and vocabulary, with David's real numbers.
    One page, ATS-safe. Title rules from answers.md (intern version for intern roles, standard version otherwise).
-   `check-resume` must pass: no term or number outside answers.md.
+   Build it from `data/cv-base.json`: copy to `applications/files/<company>-<role>/cv.json`, reorder and reword, then
+   `python3 scripts/build_cv.py <that cv.json>` (one page, no em dashes). `check-resume` must pass: no term or number outside answers.md.
 5. **Portfolio case studies.** Default pair: **UniPod** first, **Haulam** second. Use Black Leather, CTRL or Cowrywise
    only when the role clearly needs something those two can't show.
 6. **Answer every question spectacularly.** Each free-text answer and the cover letter answers the question actually asked,
