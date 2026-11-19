@@ -55,7 +55,9 @@ if run.get('auto_submit') and not run.get('dry_run'):
                "rule, a graded task, a login, an interactive CAPTCHA) is NEEDS HUMAN, never a guess.")
 elif not run.get('dry_run'):
     out.append("AUTO-SUBMIT IS OFF: fill and verify each application, write its doc marked READY FOR DAVID, "
-               "then leave it unsubmitted.")
+               "then leave it unsubmitted IN ITS OWN TAB: open a new tab for each one, never navigate a filled form away, "
+               "and at the end of the run close every tab EXCEPT these filled forms. List each left-open tab "
+               "(company, role, tab title) at the top of the run summary so David can review and click Submit.")
 if run.get('one_application_per_company_per_run', True):
     out.append("One application per company per run.")
 if run.get('same_day_company_freeze', True):
