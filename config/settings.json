@@ -94,7 +94,23 @@
       "canva",
       "softwire",
       "societe generale",
-      "costello medical"
+      "costello medical",
+      "jobgether",
+      "free-work",
+      "hiredbuddy",
+      "harnham",
+      "hunteed",
+      "photon",
+      "cxg",
+      "crossover",
+      "toptal",
+      "braintrust",
+      "turing",
+      "andela",
+      "mercor",
+      "dataannotation",
+      "outlier",
+      "remotasks"
     ],
     "skip_notes": [
       "Skip-these tab of the Google Sheet: no visa sponsorship for interns."
@@ -140,7 +156,8 @@
       "logistics",
       "dashboards"
     ],
-    "_my_skills_note": "ONLY skills the master CV proves. Pending David: react (module only), webflow, protopie, mobile apps, b2b saas, service design. Add after confirming."
+    "_my_skills_note": "ONLY skills the master CV proves. Pending David: react (module only), webflow, protopie, mobile apps, b2b saas, service design. Add after confirming.",
+    "_skip_agencies_note": "Staffing agencies, job aggregators and talent marketplaces: never apply through them."
   },
   "eligibility": {
     "needs_visa_sponsorship": true,

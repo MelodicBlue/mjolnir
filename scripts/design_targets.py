@@ -13,22 +13,28 @@ import re, sys
 
 # ---------------------------------------------------------------- titles
 DESIGN = re.compile(
-    r'product design|ux|ui\b|ui/|user experience|user interface|interaction design|experience design'
+    r'product design|\bux\b|\bui\b|user experience|user interface|interaction design|experience design'
     r'|product designer|digital designer|web designer|design engineer|design technologist'
     r'|visual designer|brand designer|design intern|designer intern|design internship|design (?:apprentice|trainee)', re.I)
 # Senior and management roles, and design jobs that are not digital product work.
-TOO_SENIOR = re.compile(r'senior|\bsr\b\.?|staff|principal|\blead\b|manager|director|head of|\bvp\b|\bchief\b|\biii\b|\biv\b', re.I)
+TOO_SENIOR = re.compile(r'senior|s[eé]nior|experienced|exp[eé]riment[eé]|confirm[eé]|\bmid[- ]?level|\bsr\b\.?|staff|principal|\blead\b|manager|director|head of|\bvp\b|\bchief\b|\biii\b|\biv\b', re.I)
 NOT_PRODUCT = re.compile(
     r'industrial design|mechanical|hardware|interior|fashion|apparel|textile|furniture|packaging|print|instructional'
     r'|game designer|level designer|narrative|sound designer|landscape|architectur|civil|electrical|circuit|pcb|asic'
-    r'|cad\b|drafter|recruit|sales|account exec|researcher only', re.I)
+    r'|cad\b|drafter|recruit|recrut|sales|account exec|researcher only|graphic|motion designer|evaluator'
+    r'|analog|\bic\b|silicon|\brf\b|data hall|\bbms\b|power|electronic|structural|hvac|piping|process|chemical|cryo'
+    r'|mechatronic|automotive|aerospace|embedded|fpga|verification|layout engineer|qa engineer|automation', re.I)
+# Titles written in a language David does not work in (the job almost always requires it).
+LOCAL_LANG = re.compile(r'\*in\b|:in\b|dise[nñ]ador|concepteur|stage\b|stagiaire'
+                        r'|praktikum|werkstudent|tirocin|est[aá]gio|pr[aá]cticas|becario', re.I)
 INTERN = re.compile(r'intern\b|internship|placement|working student|trainee|apprentice|co-?op\b|siwes|industrial training', re.I)
 JUNIOR = re.compile(r'junior|\bjr\b|associate|entry.?level|graduate|new grad|early career|\bi\b$|\b1\b$', re.I)
 ADJACENT = re.compile(r'visual designer|brand designer|web designer|digital designer|design engineer|design technologist', re.I)
 
 def title_ok(t):
     t = t or ''
-    return bool(DESIGN.search(t)) and not TOO_SENIOR.search(t) and not NOT_PRODUCT.search(t)
+    return (bool(DESIGN.search(t)) and not TOO_SENIOR.search(t) and not NOT_PRODUCT.search(t)
+            and not LOCAL_LANG.search(t))
 
 def title_tier(t):
     t = t or ''

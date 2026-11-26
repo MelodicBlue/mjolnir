@@ -80,7 +80,7 @@ def score(r, mine, priority, now, min_fit):
     tier = DT.title_tier(title)
     asked = [k for k, rx in VOCAB_RE.items() if rx.search(desc)]
     covered = [k for k in asked if k in mine]
-    coverage = len(covered) / len(asked) if asked else 0.75  # no description: assume typical design ask
+    coverage = len(covered) / len(asked) if asked else 0.55  # no description: unverified, rank below postings we could read
     tier_w = {'intern': 1.0, 'junior': 0.95, 'core': 0.85, 'adjacent': 0.7}[tier]
     yrs = r.get('years')
     if yrs in (None, '?', ''):
