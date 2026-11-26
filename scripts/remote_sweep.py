@@ -49,6 +49,8 @@ def himalayas(since, rows):
             posted = datetime.datetime.fromtimestamp(int(j.get('pubDate') or 0), UTC)
             if posted < since: older += 1; continue
             locs = j.get('locationRestrictions') or []
+            # A country list is a hiring restriction: keep it only if Nigeria or Africa/EMEA is on it.
+            if locs and not any(re.search(r'nigeria|africa|emea|worldwide|anywhere', str(l), re.I) for l in locs): continue
             loc = 'Remote - ' + (', '.join(locs) if locs else 'Worldwide')
             if j.get('timezoneRestrictions'): loc += ' | UTC ' + ','.join(str(x) for x in j['timezoneRestrictions'][:6])
             pay = f"{j.get('minSalary') or ''}-{j.get('maxSalary') or ''} {j.get('currency') or ''}/{j.get('salaryPeriod') or ''}" if j.get('minSalary') else ''
